@@ -1,0 +1,16 @@
+.git
+djvenv
+.idea
+/samblog/blog/__pycache__/
+/samblog/samblog/__pycache__/
+/blog/migrations/__pycache__/
+samblog/blog/migrations/__pycache__/
+samblog/blog/templatetags/__pycache__/
+samblog/users/migrations/__pycache__/
+samblog/users/__pycache__/
+samblog/media/users/2026/
+samblog/db.sqlite3
+cert.crt
+cert.key
+.env
+

@@ -1,0 +1,8 @@
+{% for category in categories %}
+{% if category.id == cat_selected %}
+
+<li style="text-transform: uppercase" class="active">{{ category.name }}</li>
+{% else %}
+<li><a style="text-transform: uppercase" href="{{ category.get_absolute_url }}">{{ category.name }}</a></li>
+{% endif %}
+{% endfor %}

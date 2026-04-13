@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block breadcrumbs %}
+{% endblock %}
+
+{% block content %}
+<div class="post-panel">
+    <p id="first">Автор: {{ post.author|default:'неизвестен' }}</p>
+    <p id="last-in-post">Создано {{ post.time_create|date:'d-m-Y H:i:s' }} &nbsp; Обновлено {{ post.time_update|date:'d-m-Y H:i:s' }}</p>
+</div>
+{% if post.photo %}
+<p><img src="{{ post.photo.url }}"></p>
+{% endif %}
+{{ post.content|linebreaks }}
+
+    {% with post.tags.all as tags %}
+    {% if tags %}
+    <ul class="tag-list">
+        <li>Теги: </li>
+        {% for tag in tags %}
+            <li><a href="{{ tag.get_absolute_url }}">{{ tag.title }}</a> </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
+<div id="bottom-post">
+<!--    <input type=button value="&lt;&lt; Назад" onClick="javascript:history.go(-1);" id="input-as-button">-->
+    <a href="{% url 'home' %}" class="a-as-button">&lt;&lt; Назад</a>
+    {% if perms.blog.change_posts or user == post.author %}
+    <a  id="button-edit" href="{% url 'edit_content' post.slug %}">Редактировать</a>
+    {% endif %}
+</div>
+
+{% endblock %}

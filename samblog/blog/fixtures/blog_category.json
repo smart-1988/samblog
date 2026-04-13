@@ -1,0 +1,1 @@
+[{"model": "blog.category", "pk": 1, "fields": {"name": "Программирование", "slug": "programmirovanie"}}, {"model": "blog.category", "pk": 2, "fields": {"name": "Работа", "slug": "rabota"}}, {"model": "blog.category", "pk": 3, "fields": {"name": "Музыка", "slug": "musyka"}}, {"model": "blog.category", "pk": 4, "fields": {"name": "Разное", "slug": "raznoe"}}]

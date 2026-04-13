@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{{ content.content|linebreaks }}
+
+<h2>МОИ СЕРТИФИКАТЫ</h2>
+<div class="certs-row">
+    {% for cert in certs %}
+    <figure>
+        <a href="{{ cert.url }}" target="_blank">
+            <img src="{{ cert.image.url }}" width="110" height="110" alt="{{ cert.img }}">
+            <figcaption>{{ cert.title }}<span>{{cert.year}}</span></figcaption>
+        </a>
+    </figure>
+    {% endfor %}
+</div>
+<p><a href="{% url 'home' %}" class="a-as-button">Вернуться на главную страницу</a> </p>
+{% endblock %}

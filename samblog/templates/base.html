@@ -1,0 +1,108 @@
+{% load static %}
+{% load blog_tags %}
+
+<html lang="en">
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <link type="text/css" href="{% static 'blog/css/styles.css' %}" rel="stylesheet"/>
+	<link rel="shortcut icon" href="{% static 'blog/jpg/favicon.ico' %}" type="image/x-icon"/>
+    <title>
+		{{ title }}
+	</title>
+</head>
+	<body>
+		<div id="wrapper">
+			<header>
+				<a href="/" id="logo"><img src="{% static 'blog/jpg/logo.png' %}" alt="logo"></a>
+
+				<form name="search" action="{% url 'search' %}" method="get">
+					<input type="text" name="search_string" placeholder="Поиск" required><button type="submit">Искать</button>
+				</form>
+			</header>
+			<nav>
+				<ul class="top-menu">
+					{% for m in mainmenu %}
+						<li><a href="{% url m.url_name %}">{{ m.title }}</a></li>
+					{% endfor %}
+					{% if user.is_authenticated %}
+						<li>
+							<a href="{% url 'users:profile' %}" style="text-transform: none">
+								{% if user.first_name %}
+									{{ user.first_name }}
+								{% else %}
+									{{ user.username }}
+								{% endif %}
+							</a>
+							<span style="margin-left: 10px">|</span>
+							<form id="logout-form" action="{% url 'users:logout' %}" method="POST">
+								{% csrf_token %}
+								<button type="submit">Выйти</button>
+							</form>
+						</li>
+					{% else %}
+						<li><a href="{% url 'users:register' %}">Регистрация </a> | <a href="{% url 'users:login' %}">Войти</a></li>
+					{% endif %}
+				</ul>
+			</nav>
+			<div id="heading">
+				<h1>{{ title }}</h1>
+			</div>
+			<aside>
+				<nav>
+					<ul class="aside-menu">
+						{% if cat_selected == 0 %}
+						<li class="active">ВСЕ КАТЕГОРИИ</li>
+						{% else %}
+						<li><a href="{% url 'home' %}">ВСЕ КАТЕГОРИИ</a></li>
+						{% endif %}
+						{% show_categories cat_selected %}
+					</ul>
+				</nav>
+				<a href="{% url 'feedback' %}"><img src="{% static 'blog/jpg/commercial.png' %}" id="commercial"></a>
+			</aside>
+			<section>
+					{% block content %}
+					{% endblock %}
+
+					{% block navigation %}
+					{% endblock %}
+
+			</section>	
+			{% block certs %}
+			{% endblock %}
+		</div>
+		<footer>
+			<div id="footer">
+				<div id="tags">
+					{% show_tags %}
+				</div>
+				<div id="sitemap">
+					<h3>КАРТА САЙТА</h3>
+					<div>
+						<a href="{% url 'home' %}">Главная</a>
+						<a href="{% url 'about' %}">Об авторе</a>
+						<a href="{% url 'about_site' %}">О сайте</a>
+					</div>
+					<div>
+						<a href="{% url 'search' %}">Мои посты</a>
+						<a href="{% url 'add_content' %}">Добавить пост</a>
+						<a href="{% url 'feedback' %}">Обратная связь</a>
+					</div>
+				</div>
+				<div id="social">
+					<h3>СОЦИАЛЬНЫЕ СЕТИ</h3>
+					<div id="social-icons">
+						<a href="https://vk.com/id33357890" target="_blank"><img src="{% static 'blog/jpg/vk.png' %}" alt="vk" width="1git 0px"></a>
+						<a href="https://t.me/sm_art88" target="_blank"><img src="{% static 'blog/jpg/telegram.png' %}" alt="telegram" width="100"></a>
+						<a href="https://max.ru/u/f9LHodD0cOIQ32TQgnZpvL8PfB-5Bp7HZWWjN0cSW-fxJWzDVr4Lep_OQWQ" target="_blank"><img src="{% static 'blog/jpg/max.png' %}" alt="max" width="100"></a>
+					</div>
+				</div>
+				<div id="footer-logo">
+					<a href="/"><img src="{% static 'blog/jpg/logo.png' %}" alt="logo" width="80	"></a>
+					<p>Copyright &copy; Самуйлов Артём</p>
+				</div>
+			</div>
+		</footer>
+	</body>
+</html>

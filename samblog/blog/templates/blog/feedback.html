@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form action="" method="post">
+    {% csrf_token %}
+    <div class="form-error">{{ form.non_field_errors }}</div>
+    {% for f in form %}
+    <p><label class="form-label" for="{{f.id_for_label}}">
+            {{ f.label }}{% if f.field.required %}<span style="color: #ff7f27;">*</span>
+            {% endif %}
+        </label>{{ f }}</p>
+    <div class="form-error"><h2>{{ f.errors }}</h2></div>
+    {% endfor %}
+    <div id="bottom-post">
+        <button type="submit">Отправить</button>
+    </div>
+</form>
+
+{% endblock %}

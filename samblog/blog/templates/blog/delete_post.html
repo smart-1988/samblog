@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+    <p>Вы уверены, что хотите удалить "{{ post }}"?</p>
+    {{ form }}
+    <div id="bottom-post">
+        <button id="cancel-button" type="submit">Удалить</button>
+        <a id="cancel-link" href="{% url 'edit_content' post.slug %}">Отмена</a>
+    </div>
+
+
+
+</form>
+{% endblock %}

@@ -1,0 +1,77 @@
+from django.contrib.auth import authenticate, login, logout, get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.template.context_processors import request
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, UpdateView
+
+from samblog.settings import DEFAULT_IMAGE_USER
+from users.forms import LoginUserForm, RegisterUserForm, ProfileUserForm, UserPasswordChangeForm
+
+
+# Create your views here.
+# def login_user(request):
+#     if request.method == 'POST':
+#         form = LoginUserForm(request.POST)
+#         if form.is_valid():
+#             cd = form.cleaned_data
+#             user = authenticate(request, username=cd['username'], password=cd['password'])
+#             if user and user.is_active:
+#                 login(request,user)
+#                 return redirect('home')
+#     else:
+#         form = LoginUserForm
+#     return render(request, 'users/login.html', {'form': form})
+
+
+class LoginUser(LoginView):
+    form_class = LoginUserForm
+    template_name = 'users/login.html'
+    extra_context = {'title': 'Авторизация'}
+
+
+# def logout_user(request):
+#     logout(request)
+#     return redirect('users:login')
+
+# def register(request):
+#     if request.method == 'POST':
+#         form = RegisterUserForm(request.POST)
+#         if form.is_valid():
+#             user = form.save(commit=False)
+#             user.set_password(form.cleaned_data['password1'])
+#             user.save()
+#             return render(request, 'users/register_done.html', {'form': form})
+#     else:
+#         form = RegisterUserForm()
+#     return render(request, 'users/register.html', {'form': form})
+
+
+class RegisterUser(CreateView):
+    form_class = RegisterUserForm
+    extra_context = {'title': 'Страница регистрации'}
+    success_url = reverse_lazy('users:login')
+    template_name = 'users/register.html'
+
+
+class ProfileUser(LoginRequiredMixin, UpdateView):
+    extra_context = {
+        'title': 'Редактирвание профиля',
+        'default_image': DEFAULT_IMAGE_USER,
+    }
+    template_name = 'users/profile.html'
+    form_class = ProfileUserForm
+
+    def get_success_url(self):
+        return reverse_lazy('users:profile')
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+
+class UserPasswordChange(PasswordChangeView):
+    form_class = UserPasswordChangeForm
+    success_url = reverse_lazy("users:password_change_done")
+    template_name = "users/password_change_form.html"

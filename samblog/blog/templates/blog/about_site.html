@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{ content.content|linebreaks }}
+<p><a href="https://github.com/smart-1988/mysite" target="_blank" id="github">Ссылка на GitHub</a></p>
+<p><a href="{% url 'home' %}" class="a-as-button">Вернуться на главную страницу</a> </p>
+{% endblock %}

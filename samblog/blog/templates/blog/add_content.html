@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if not slug %}
+    <input type=button value="&lt;&lt; Назад" onClick="javascript:history.go(-1);" id="input-as-button">
+{% else %}
+    <a href="{% url 'post' slug %}" class="a-as-button">&lt;&lt; Назад</a>
+{% endif %}
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-error">{{ form.non_field_errors }}</div>
+    {% for f in form %}
+    <p><label class="form-label" for="{{f.id_for_label}}">{{ f.label }}</label>{{ f }}</p>
+    <div class="form-error"><h2>{{ f.errors }}</h2></div>
+    {% endfor %}
+    <div id="bottom-post">
+        <button type="submit">Отправить</button>
+        {% if slug %}
+            <a class="a-as-button" id="red-a-as-button" href="{% url 'delete_content' slug %}">Удалить пост</a>
+        {% endif %}
+    </div>
+</form>
+
+
+{% endblock %}

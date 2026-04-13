@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!--<h1>{{ title }}</h1>-->
+<!--{% include "blog/includes/nav.html" %}-->
+<ul>
+    {% for p in posts %}
+    {% if p.is_published %}
+        <li>
+            <blockquote>
+                <h2><a href="{{ p.get_absolute_url }}">{{ p.title }}</a></h2>
+            </blockquote>
+            <div class="content">
+                {% if p.photo %}
+                <a href="{{ p.get_absolute_url }}"><img id="photo-article-left" src="{{ p.photo.url }}"></a>
+                {% endif %}
+                <p>{{ p.content|linebreaks|truncatewords:60 }}</p>
+            </div>
+            <div class="article-panel">
+                <p id="first">Автор: {{ p.author|default:'неизвестен' }} | Категория: {{ p.cat.name|lower }}</p>
+                <p id="last">{{ p.time_create|date:'d-m-Y H:i:s' }}</p>
+            </div>
+            {% if not forloop.last %}
+
+            {% endif %}
+        </li>
+    {% endif %}
+    {% endfor %}
+</ul>
+<!--{% include "blog/includes/nav.html" only %}-->
+{% endblock %}
+
+{% block navigation %}
+{% if page_obj.paginator.num_pages > 1 %}
+<div class="pagination">
+    <span class="step-links">Страница:
+        {% if page_obj.has_previous %}
+            <a href="?page=1">1</a>
+            {% if page_obj.previous_page_number|add:-1 != 1 and page_obj.previous_page_number > 2 %}
+                <span style="ellipsis">...</span>
+            {% endif %}
+            {% if page_obj.previous_page_number != 1 %}
+                <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+            {% endif %}
+        {% endif %}
+
+        <span class="current">
+            {{ page_obj.number }}
+        </span>
+
+        {% if page_obj.has_next %}
+            {% if page_obj.next_page_number != page_obj.paginator.num_pages %}
+                <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+            {% endif %}
+            {% if page_obj.number|add:2 != page_obj.paginator.num_pages and page_obj.number|add:2 < page_obj.paginator.num_pages %}
+                <span style="ellipsis">...</span>
+            {% endif %}
+            <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+        {% endif %}
+    </span>
+</div>
+{% endif %}
+{% endblock %}
