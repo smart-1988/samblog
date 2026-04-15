@@ -44,11 +44,16 @@ class Posts(models.Model):
     def get_absolute_url(self):
         return reverse('post', kwargs={'post_slug': self.slug})
 
-
     def save(self, *args, **kwargs):
-        # if not self.id:
-        self.slug = slugify(unidecode(self.title))
-        super().save(*args, **kwargs)
+        """Автоматический слаг при сохранении. Если такой слаг уже есть, добавляем в конце счётчик"""
+
+        i = 0
+        slug = slugify(unidecode(self.title))
+        while Posts.objects.filter(slug=slug).exists():
+            i += 1
+            slug = slug + f'-{i}' if i == 1 else slug[:-2] + f'-{i}'
+        self.slug = slug
+        return super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Пост'            # Отображение имени записей модели в админке, единственное число
